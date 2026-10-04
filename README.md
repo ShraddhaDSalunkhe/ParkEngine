@@ -1,10 +1,5 @@
 # ParkEngine
 A scalable Java-based parking lot management system demonstrating LLD, OOP, SOLID principles, and design patterns.
-ParkEngine -- Scalable Parking Allocation System
-
-A Java-based Low-Level Design (LLD) project that simulates a
-real-world parking lot using Object-Oriented Programming and multiple
-Design Patterns.
 
 Overview
 
@@ -25,7 +20,7 @@ Features
 
 Supports Bike, Car, and Truck
 
- Vehicle-specific parking spots
+🅿️ Vehicle-specific parking spots
 
 Automatic parking ticket generation
 
@@ -41,7 +36,7 @@ Configurable pricing strategy
 
 Supports Cash, UPI, and Card payments
 
-* Calculates parking duration using LocalDateTime and Duration
+⏱️ Calculates parking duration using LocalDateTime and Duration
 
 Entry and exit gate management
 
@@ -203,7 +198,7 @@ ParkingTicket         Stores a parking transaction
 EntryGate             Generates parking tickets
 ExitGate              Handles billing and payment
 ParkingLot            Central controller for the parking system
-program1017           Console application entry point
+ParkEngine           Console application entry point
 
 ️ Tech Stack
 
@@ -228,7 +223,7 @@ The current project is implemented in a single Java file:
 
 ParkEngine/
 │
-├── program1017.java
+├── ParkEngine.java
 └── README.md
 
 The Java file contains the complete model, strategy, gate, parking-lot,
@@ -244,14 +239,14 @@ Command Prompt / Terminal / IDE such as IntelliJ IDEA or VS Code
 
 Compile
 
-javac program1017.java
+javac ParkEngine.java
 
 Run
 
-java program1017
+java ParkEngine
 
-The public entry point is the program1017 class, so the source file
-is currently named program1017.java.
+The public entry point is the ParkEngine class, so the source file
+is currently named ParkEngine.java.
 
 ️ Console Menu
 
