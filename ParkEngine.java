@@ -336,4 +336,15 @@ class TruckSpot extends ParkingSpot
     }
 }
 
+/////////////////////////////////////////////////////////
+// Step 5 : ParkingObserver class
+// It is used to automatically update display board when
+// the parking availablity changes
+// Concepts : Observer 
+/////////////////////////////////////////////////////////
+
+interface ParkingObserver
+{
+    void update();
+}
 
