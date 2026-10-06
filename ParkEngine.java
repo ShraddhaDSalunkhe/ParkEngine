@@ -144,4 +144,33 @@ class Truck extends Vehicle
         System.out.println("Truck : "+getVehicleNumber());
     }
 }
+/////////////////////////////////////////////////////////
+// Step 3 : Create VehicleFActory Class
+// It is used to centralsied the creation of vechile objects
+// Concepts : Factory Design Pattern
+/////////////////////////////////////////////////////////
+
+class VehicleFactory
+{
+    // Creates and return the desired class object
+
+    public static Vehicle creatVehicle(VehicleType type, String number)
+    {
+        switch(type)
+        {
+            case BIKE:
+                return new Bike(number);
+
+            case CAR:
+                return new Car(number);
+
+            case TRUCK:
+                return new Truck(number);
+
+            default:
+                throw new IllegalArgumentException("Invalid Vehicle type");
+        }
+    }
+}
+
 
