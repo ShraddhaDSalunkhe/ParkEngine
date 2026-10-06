@@ -52,3 +52,96 @@ enum TicketStatus
     CLOSED
 }
 
+/////////////////////////////////////////////////////////
+// Step 2 : Create Vehicle Class hierarchy
+// It is used to create multiple types of classes which r
+// represnets the types of vehicles
+// Concepts : Abstraction , Inheritance, Polymorphism, Encapsulation
+/////////////////////////////////////////////////////////
+
+// Class which represnts a generic vehicle type
+abstract class Vehicle
+{
+    // Abstracted (Hidden) characteristics of class
+
+    private String vehicleNumber;
+
+    private VehicleType vehicleType;
+
+    // Parametrised constructor
+    public Vehicle(String vehicleNumber, VehicleType vehicleType)
+    {
+        this.vehicleNumber = vehicleNumber;
+        this.vehicleType = vehicleType;
+    }
+
+    // Concrete getter method
+    public VehicleType getVehicleType()
+    {
+        return this.vehicleType;
+    }
+
+    // Concrete getter method
+    public String getVehicleNumber()
+    {
+        return this.vehicleNumber;
+    }
+
+    // Every concrete class will provide its own defination
+    public abstract void display();
+} 
+
+// Class which represnets the Vechile type as Bike
+class Bike extends Vehicle
+{
+    // Parametrised constructor
+    public Bike(String vehicleNumber)
+    {
+        // Calls Vechile class constructor
+        super(vehicleNumber, VehicleType.BIKE);
+    }
+
+    // Method overriding
+    @Override 
+    public void display()
+    {
+        System.out.println("Bike : "+getVehicleNumber());
+    }
+}
+
+// Class which represnets the Vechile type as Car
+class Car extends Vehicle
+{
+    // Parametrised constructor
+    public Car(String vehicleNumber)
+    {
+        // Calls Vechile class constructor
+        super(vehicleNumber, VehicleType.CAR);
+    }
+
+    // Method overriding
+    @Override 
+    public void display()
+    {
+        System.out.println("Car : "+getVehicleNumber());
+    }
+}
+
+// Class which represnets the Vechile type as Truck
+class Truck extends Vehicle
+{
+    // Parametrised constructor
+    public Truck(String vehicleNumber)
+    {
+        // Calls Vechile class constructor
+        super(vehicleNumber, VehicleType.TRUCK);
+    }
+
+    // Method overriding
+    @Override 
+    public void display()
+    {
+        System.out.println("Truck : "+getVehicleNumber());
+    }
+}
+
