@@ -859,3 +859,55 @@ class EntryGate
         return new ParkingTicket(vehicle, floor, sopt);
     }
 }
+/////////////////////////////////////////////////////////
+// Step 13 : Create ExitGate Class
+
+// It is used to handle billing and payment during the 
+// vechile exit
+
+/////////////////////////////////////////////////////////
+
+class ExitGate
+{
+    private int gateNumber;
+
+    public ExitGate(int gateNumber)
+    {
+        this.gateNumber = gateNumber;
+    }
+
+    public int getGateNumber()
+    {
+        return this.gateNumber;
+    }
+
+    // This performs complete exit operations
+
+    public void processExit(
+                                ParkingTicket ticket,
+                                PricingStrategy pricingStrategy,
+                                PaymentStrategy paymentStrategy
+                            )
+    {
+        // Step 1 : Close the ticket and record the exit time
+        ticket.closeTicket();
+
+        // Step 2 : Calculate the parking duration
+        long hours = ticket.calculateHours();
+
+        // Step 3 : Calculate the parking chargers
+        double amount = pricingStrategy.calculatePrice(ticket.getVehicle(), hours);
+
+        System.out.println();
+
+        System.out.println("Vechile exiting from gate : "+gateNumber);
+        
+        System.out.println("PArking Duration : "+hours);
+
+        System.out.println("Parking charges : "+amount);
+        
+        // Step 4 : Process the payment using selected payment strategy
+
+        paymentStrategy.pay(amount);
+    }
+}
