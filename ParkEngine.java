@@ -458,4 +458,58 @@ class ParkingFloor
         }
     }
 }
+/////////////////////////////////////////////////////////
+// Step 7 : Create ParkingDispalyBoard Class
+// It is used to create a class which displays the parking
+// status
 
+// Subject  ->  ParkingFloor 
+// Observer ->  ParkingDispalyBoard
+
+// Note : Any observer is going to observe the subject
+// There will be multiple observers for one subject
+
+// Concepts : Observer Design pattern
+/////////////////////////////////////////////////////////
+
+class ParkingDispalyBoard implements ParkingObserver
+{
+    // Floor whose availablity is displayed by this board
+    private ParkingFloor floor;
+
+    // Constructor
+    public ParkingDispalyBoard(ParkingFloor floor)
+    {
+        this.floor = floor;
+    }
+
+    // Automatically called whenever floor availablity changes
+    @Override 
+    public void update()
+    {
+        System.out.println();
+        System.out.println("--------- Display Board ---------");
+        
+        System.out.println("Floor : "+floor.getFloorNumber());
+
+        System.out.println("Available Bike spots : "+floor.getAvailableCount(SpotType.BIKE));
+       
+        System.out.println("Available Car spots : "+floor.getAvailableCount(SpotType.CAR));
+        
+        System.out.println("Available Truck spots : "+floor.getAvailableCount(SpotType.TRUCK));
+        
+        System.out.println("---------------------------------");
+        System.out.println();
+    }
+}
+
+// We can create new observers for the same subject
+/*
+    class ParkingWebsite implements ParkingObserver
+    {
+        public void update()
+        {   
+        
+        }
+    }
+*/
