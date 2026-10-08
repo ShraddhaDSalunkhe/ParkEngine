@@ -825,3 +825,37 @@ class ParkingTicket
         System.out.println();
     }
 }
+
+/////////////////////////////////////////////////////////
+// Step 12 : Create EntryGate Class
+
+// It is used to handle entry of a vechile and its ticket
+// generation
+
+/////////////////////////////////////////////////////////
+
+class EntryGate
+{
+    private int gateNumber;
+
+    public EntryGate(int gateNumber)
+    {
+        this.gateNumber = gateNumber;
+    }
+
+    public int getGateNumber()
+    {
+        return this.gateNumber;
+    }
+
+    // it generates the new parking ticket when
+    // veichle enters
+
+    public ParkingTicket generateTicket(Vehicle vehicle, ParkingFloor floor, ParkingSpot sopt)
+    {
+        System.out.println("Vehile entering from gate : "+this.gateNumber);
+        
+        // New parking ticket gets generated for the vechile
+        return new ParkingTicket(vehicle, floor, sopt);
+    }
+}
