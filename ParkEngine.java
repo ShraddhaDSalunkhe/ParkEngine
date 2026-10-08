@@ -665,3 +665,163 @@ class CashPayment implements PaymentStrategy
         System.out.println("Cash payment succesful : Rs. "+amount);
     }
 }
+
+/////////////////////////////////////////////////////////
+// Step 11 : Create ParkingTicket Class
+
+// It is used to represent one complete parking transaction
+
+/////////////////////////////////////////////////////////
+
+class ParkingTicket
+{
+    // Used for generating unique tickets
+    private static int counter = 1000;
+
+    // Ticket number for unique tcket
+    private int ticketNumber;
+
+    // Vechile associated with that ticket
+    private Vehicle vehicle;
+
+    // Floor on which the vechile is parked
+    private ParkingFloor floor;
+
+    // Actual spot on which the vechile is parked
+    private ParkingSpot spot;
+
+    // Time at which vechile arrives
+    private LocalDateTime entryTime;
+
+    // Time at which vechile exited from parking floor
+    private LocalDateTime exitTime;
+
+    // It maintains the status of the ticket
+    private TicketStatus status;
+
+    // Paramerised constructor
+    public ParkingTicket(
+                            Vehicle vehicle,
+                            ParkingFloor floor,
+                            ParkingSpot spot
+                        )
+    {
+        this.ticketNumber = ++counter;
+        this.vehicle = vehicle;
+        this.floor = floor;
+        this.spot = spot;
+        this.entryTime = LocalDateTime.now();
+        this.status = TicketStatus.ACTIVE;
+    }
+
+    // Getter method for ticket number
+    public int getTicketNumber()
+    {
+        return this.ticketNumber;
+    }
+
+    // Getter method for vechile
+    public Vehicle getVehicle()
+    {
+        return this.vehicle;
+    }
+
+    // Getter method for floor
+    public ParkingFloor getFloor()
+    {
+        return this.floor;
+    }
+
+    // Getter method for spot
+    public ParkingSpot getSpot()
+    {
+        return this.spot;
+    }
+
+    // Getter method for entrytime
+    public LocalDateTime getEntryTime()
+    {
+        return this.entryTime;
+    }
+
+    // Getter method for exittime
+    public LocalDateTime getExitTime()
+    {
+        return this.exitTime;
+    }
+
+    // Getter method for status
+    public TicketStatus getStatus()
+    {
+        return this.status;
+    }
+
+    // Method gets called when vechile is going out
+    public void closeTicket()
+    {
+        this.exitTime = LocalDateTime.now();
+
+        this.status = TicketStatus.CLOSED;
+    }
+
+    // Calculate the total number of hours the vechile is parked
+    public long calculateHours()
+    {
+        LocalDateTime endtime;
+
+        if(exitTime == null)
+        {
+            endtime = LocalDateTime.now();
+        }
+        else
+        {
+            endtime = exitTime;
+        }
+
+        // Calculate the actual time
+        long minutes = Duration.between(entryTime, endtime).toMinutes();
+        
+        // Converts minutes to hours
+        long hours = minutes / 60;
+
+        if(minutes % 60 != 0)
+        {
+            hours++;
+        }
+        
+        if(hours == 0)
+        {
+            hours = 1;
+        }
+
+        return hours;
+    }
+
+    // It will display complete ticket on screen
+    public void displayTicket()
+    {
+        System.out.println();
+
+        System.out.println("---------------------------------");
+        System.out.println("---------- Parking Ticket -------");
+        System.out.println("---------------------------------");
+
+        System.out.println("Ticket Number : "+this.ticketNumber);
+
+        System.out.println("Vechile Number : "+this.vehicle.getVehicleNumber());
+        
+        System.out.println("Vechile Type : "+this.vehicle.getVehicleType());
+
+        System.out.println("Floor Number : "+this.floor.getFloorNumber());
+
+        System.out.println("Spot Number : "+this.spot.getSpotNumber());
+
+        System.out.println("Entry Time : "+this.entryTime);
+
+        System.out.println("Ticket Status : "+this.status);
+
+        System.out.println("---------------------------------");
+
+        System.out.println();
+    }
+}
