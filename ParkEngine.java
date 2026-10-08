@@ -1165,3 +1165,28 @@ class ParkingLot
         }
     }
 } // End of ParkingLot Class
+
+/////////////////////////////////////////////////////////
+
+// Step 15 : Controller of the project
+
+/////////////////////////////////////////////////////////
+
+/*
+    1 : Create ParkingLot class object
+
+    2 : Create floors
+
+    3 : Add parking spots
+
+    4 : Create Display board
+
+    5 : Register observers
+
+    6 : Add floor to parkingLot
+
+    7 : Create Entry Exit Gates
+
+    8 : Display Menu
+
+*/
