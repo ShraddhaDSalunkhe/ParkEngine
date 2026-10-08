@@ -555,3 +555,71 @@ class FirstAvialableParkingStrategy implements ParkingStrategy
 
     }
 */
+
+/////////////////////////////////////////////////////////
+// Step 9 : Create PricingStrategy Class
+
+// It is used to create a class PricingStrategy
+// It keeps the pricing algorithm idependent of exit logic
+
+// Concepts : Strategy Design pattern
+/////////////////////////////////////////////////////////
+
+interface PricingStrategy
+{
+    double calculatePrice(Vehicle vehicle, long hours);
+} 
+
+class NormalPricingStrategy implements PricingStrategy
+{
+    @Override 
+    public double calculatePrice(Vehicle vehicle, long hours)
+    {
+        if(hours <= 0)
+        {
+            hours = 1;
+        }
+
+        switch(vehicle.getVehicleType())
+        {
+            case BIKE:
+                return hours * 20;
+
+            case CAR:
+                return hours * 50;
+
+            case TRUCK:
+                return hours * 100;
+
+            default:
+                return 0;
+        }
+    }
+}
+
+class WeekendPricingStrategy implements PricingStrategy
+{
+    @Override 
+    public double calculatePrice(Vehicle vehicle, long hours)
+    {
+        if(hours <= 0)
+        {
+            hours = 1;
+        }
+
+        switch(vehicle.getVehicleType())
+        {
+            case BIKE:
+                return hours * 40;
+
+            case CAR:
+                return hours * 100;
+
+            case TRUCK:
+                return hours * 200;
+
+            default:
+                return 0;
+        }
+    }
+}
