@@ -911,3 +911,257 @@ class ExitGate
         paymentStrategy.pay(amount);
     }
 }
+
+/////////////////////////////////////////////////////////
+// Step 14 : Create ParkingLot Class
+
+// Pattern : Singleton pattern
+
+// This class is the main controller of complete parking system
+
+/////////////////////////////////////////////////////////
+
+// Sigleton class
+
+class ParkingLot
+{
+    // instance of class
+    
+    private static ParkingLot instance;
+
+    // Store the parking Lot name
+    
+    private String parkingLotName;
+
+    // Store all floors of the parking lot
+    
+    private List<ParkingFloor> floors;
+
+    // Maps the ticket number with active parking slot
+    
+    private Map<Integer, ParkingTicket> activeTickets;
+
+    // Maps vechile number with active tickets
+    // Used for searching vehicle
+    // It prevents duplicate parking
+
+    private Map<String, ParkingTicket> vehicleTicketMap;   
+
+    // Algorithm used for selecting parking spot
+    
+    private ParkingStrategy parkingStrategy;
+
+    // Algorithm used for calculating parking charges
+    
+    private PricingStrategy pricingStrategy;
+
+    // Private constructor for singleton class
+    
+    private ParkingLot()
+    {
+        floors = new ArrayList<>();
+
+        activeTickets = new HashMap<>();
+
+        vehicleTicketMap = new HashMap<>();
+
+        // Default parking strategy
+
+        parkingStrategy = new FirstAvialableParkingStrategy();
+
+        // Default pricing strategy
+
+        pricingStrategy = new NormalPricingStrategy();
+
+    }
+
+    // Method to return the singleton class object
+    public static synchronized ParkingLot getInstance()
+    {
+        if(instance == null)
+        {
+            instance = new ParkingLot();
+        }
+
+        return instance;
+    } 
+
+    // Used to set name for complete parking lot
+
+    public void setParkingLotName(String parkingLotName)
+    {
+        this.parkingLotName = parkingLotName;
+    }
+
+    // Used to add new parking floor
+
+    public void addFloor(ParkingFloor floor)
+    {
+        // Insert in arraylist
+
+        floors.add(floor);
+    }
+
+    // This method returns list of all floors
+
+    public List<ParkingFloor> getFloors()
+    {
+        return floors;
+    }
+
+    // This method can be used to change the default parking strategy
+
+    public void setParkingStrategy(ParkingStrategy strategy)
+    {
+        this.parkingStrategy = strategy;
+    }
+
+    // This method can be used to change the default priscing strategy
+
+    public void setPricingStrategy(PricingStrategy strategy)
+    {
+        this.pricingStrategy = strategy;
+    }
+
+    /*
+        Algorithm for parking the vechile
+
+        Check Duplicate Vechile
+                |
+        Find available spot
+                |
+        Identify floor for vechile
+                |
+        Occupy Spot for vechile
+                |
+        Generate ticket for vechile
+                |
+        Store the finale ticket
+    
+    */
+    public ParkingTicket parkVehicle(
+                                        Vehicle vechile,
+                                        EntryGate entryGate
+    )
+    {
+        // Step 1 : Prevent the same vechile for being parked multiple times
+        
+        if(vehicleTicketMap.containsKey(vechile.getVehicleNumber()))
+        {
+            System.out.println("This vechile is already parked");
+
+            throw new RuntimeException("This vechile is already parked");
+        }
+
+        // Step 2 : Find the available parking spot
+
+        ParkingSpot spot = parkingStrategy.findSpot(floors, vechile);
+
+        // If there is no empty spot
+
+        if(spot == null)
+        {
+            throw new RuntimeException("Parking is full");
+        }
+
+        // Step 3 : Identiy the exact floor for the vechile
+
+        ParkingFloor selectedFloor = null;
+
+        for(ParkingFloor floor : floors)
+        {
+            ParkingSpot temp = floor.findAvailabSpot(vechile);
+            
+            if(temp == spot)
+            {
+                selectedFloor = floor;
+                break;
+            }
+        }
+
+        if(selectedFloor == null)
+        {
+            throw new RuntimeException("Unabl to identify floor");
+        }
+
+        // Step 4 : Occupy the spot
+
+        selectedFloor.occupySpot(spot, vechile);
+
+        // Step 5 : Generate parking ticket from entry gate
+
+        ParkingTicket ticket = entryGate.generateTicket(vechile, selectedFloor, spot);
+
+        // Step 6 : Store the tickct using ticket number
+        activeTickets.put(ticket.getTicketNumber(),ticket);
+
+        // Step 7 : Store the ticket using vechile number
+        vehicleTicketMap.put(vechile.getVehicleNumber(), ticket);
+
+        return ticket;
+    }
+
+    /*
+        Find ticket
+            |
+        Process Exit
+            |
+        Calculate Charges
+            |
+        Payment
+            |
+        Release Spot
+            |
+        Remove active records 
+    */
+
+    public void removeVehicle(
+                                int ticketNumber,
+                                ExitGate exitGate, 
+                                PaymentStrategy paymentStrategy
+    )
+    {
+
+        // Step 1 : Find active ticket using ticket number
+        ParkingTicket ticket = activeTickets.get(ticketNumber);
+
+        if(ticket == null)
+        {
+            throw new RuntimeException("There is no such ticket");
+        }
+
+        // Step 2 : Perform billing and payment
+        exitGate.processExit(ticket, pricingStrategy, paymentStrategy);
+
+        // Step 3 : Relaease the occupied spot
+        ticket.getFloor().releaseSpot(ticket.getSpot());
+
+        // Step 4 : Remove ticket
+        activeTickets.remove(ticketNumber);
+
+        // Step 5 : Remove vechile from active vechile
+        vehicleTicketMap.remove(ticket.getVehicle().getVehicleNumber());
+
+        System.out.println("Vechile removed succesfully");
+    }
+
+    // Search the specified method
+    public ParkingTicket searchVehicle(String vechileNumber)
+    {
+        return vehicleTicketMap.get(vechileNumber);
+    }
+
+    // Display complete parking lot information
+    public void displayParkingLot()
+    {
+        System.out.println();
+        System.out.println("-------------------------------");
+        System.out.println("----- Parking Lot Details -----");
+        System.out.println("-------------------------------");
+
+        for(ParkingFloor floor : floors)
+        {
+            floor.displayFloor();
+        }
+    }
+} // End of ParkingLot Class
